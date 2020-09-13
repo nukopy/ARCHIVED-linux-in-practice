@@ -10,6 +10,10 @@ st:
 vsh:
 	vagrant ssh
 
-.PHONY: vht
-vht:
+.PHONY: ht
+ht:
 	vagrant halt
+
+.PHONY: bl
+bl:
+	vagrant box list
