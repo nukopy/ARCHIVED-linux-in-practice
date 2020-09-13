@@ -92,12 +92,9 @@ $ vagrant halt
 $ htop
 ```
 
-- htop の様子
+- htop 実行時の様子
 
-<!-- ![](img/htop.png =WIDTHxHEIGHT) -->
-<!-- ![](img/htop.png =WIDTH) -->
-
-![](img/htop.png =250)
+<img src="img/htop.png" width="400" />
 
 ### CPU の確認：物理プロセッサ数，コア数
 
