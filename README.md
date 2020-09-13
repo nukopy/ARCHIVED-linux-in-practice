@@ -27,14 +27,14 @@ $ vagrant init bento/ubuntu-18.04
 $ vagrant up
 ```
 
-- VM 環境に入る
+- VM 環境に入ってセットアップ
 
 ```sh
 $ vagrant status  # VM が起動中であることを確認
 $ vagrant ssh
 
 # 以下 VM 環境
-# サンプルコードの動作に必要なパッケージのインストール
+# セットアップ：サンプルコードの動作に必要なパッケージのインストール
 vagrant@vagrant:~$ cd /vagrant
 vagrant@vagrant:~$ sh install.sh
 ```
