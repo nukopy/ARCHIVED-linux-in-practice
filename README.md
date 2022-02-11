@@ -85,7 +85,7 @@ $ htop
 
 - htop 実行時の様子
 
-<img src="img/htop.png" width="400" />
+<img src="./docs/img/htop.png" width="400" />
 
 ### CPU の確認：物理プロセッサ数、コア数
 
