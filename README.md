@@ -3,72 +3,63 @@
 ## 各種リンク
 
 - 書籍サイト
-  - [試して理解 Linux のしくみ - 実験と図解で学ぶ OS とハードウェアの基礎知識](http://gihyo.jp/book/2018/978-4-7741-9607-7)（技術評論者，2018）
+  - [試して理解 Linux のしくみ - 実験と図解で学ぶ OS とハードウェアの基礎知識](http://gihyo.jp/book/2018/978-4-7741-9607-7)（技術評論者、2018）
 - リポジトリ
   - [satoru-takeuchi/linux-in-practice](https://github.com/satoru-takeuchi/linux-in-practice)
 
 ## 実行環境
 
-Vagrant で構築した Ubuntu の仮想環境上でサンプルコードを実行した．
+Vagrant で構築した Ubuntu の仮想環境上でサンプルコードを実行した。
 
-- ホスト OS：macOS Mojave 10.15.3
-- ゲスト OS：Ubuntu 18.04.4 LTS (GNU/Linux 4.15.0-76-generic x86_64)
-- Vagrant 2.2.7
-- VirtualBox v6.1.2
+- OS
+  - Host: macOS Big Sur 11.6
+  - Guest: Ubuntu 20.04.3 LTS
+- Software for VM
+  - VirtualBox v6.1.32
+  - Vagrant 2.2.19
+  - Vagrant plugins
+    - vagrant-vbguest 0.3.0
+    - vagrant-disksize 0.1.3
+      - ディスク容量を設定するためのプラグイン
 
-書籍の「はじめに」では，**挙動が変わるために仮想マシン（VM）上ではなく実機上で Ubuntu を動作させることを推奨している**が，Ubuntu 用の実機がないので VM で妥協した．また，検証環境としては，Docker コンテナよりは VM が良いと判断した．
+書籍の「はじめに」では、**挙動が変わるために仮想マシン（VM）上ではなく実機上で Ubuntu を動作させることを推奨している**が、Ubuntu 用の実機がないので VM で妥協した。また、検証環境としては、Docker コンテナよりは VM が良いと判断した。
 
-## Vagrant で環境構築
+## 環境構築
 
 - VM の起動
-  - `vagrant up` したディレクトリが VM の `/vagrant` 配下にマウントされる．
+  - `vagrant up` したディレクトリが VM の `/vagrant` 配下にマウントされる。
 
 ```sh
-$ git clone [repo-url]
-$ cd [my-repo]
-$ vagrant init bento/ubuntu-18.04
-$ vagrant plugin install vagrant-disksize  # ディスク容量を設定するためのプラグイン
-$ vagrant up
-# ログの最後らへんにマウントに関するログが出力されている
-# ==> default: Mounting shared folders...
-#    default: /vagrant => /Users/pyteyon/Projects/basics/OS/Linux/Linux-no-sikumi
+cd linux-in-practice/
+vagrant init ubuntu/focal64
+vagrant up
 ```
 
-- VM 環境に入り，マウントの確認
+- VM 環境に入り、マウントの確認。その後、実験に必要なパッケージのインストール。
 
 ```sh
-# ローカル環境
-$ vagrant status  # VM が起動中であることを認確
-$ vagrant ssh
+# ----- ローカル環境 -----
+vagrant status  # VM が起動中であることを認確
+vagrant ssh # VM の中に入る
 
-# VM 環境
-vagrant@vagrant:~$ cd /vagrant
-vagrant@vagrant:/vagrant$ ls
+# ----- VM 環境 -----
+cd /vagrant
+ls
 install.sh  Makefile  note  README.md  sample-code  src  Vagrantfile
-# マウントされてる
-```
+# マウントされてることを確認
 
-- VM 環境に入り，実験に必要なパッケージのインストール
-  - インストールスクリプトをあらかじめ書いておいた．
-
-```sh
-# ローカル環境
-$ vagrant ssh
-
-# VM 環境
-vagrant@vagrant:~$ cd /vagrant
-vagrant@vagrant:~$ sh install.sh
+sh install.sh
 ```
 
 - VM の停止
 
 ```sh
-$ vagrant halt
+vagrant halt
 ```
 
 ## VM のスペック
 
-`Vagrantfile` でマシンスペックの設定が行える．ディスクサイズのように一部プラグインが必要な部分もある．
+`Vagrantfile` でマシンスペックの設定が行える。ディスクサイズのように一部プラグインが必要な部分もある。
 
 - [HashiCorp: Vagrant - Configuration](https://www.vagrantup.com/docs/providers/virtualbox/configuration)
 
@@ -79,13 +70,13 @@ $ vagrant halt
   - 物理プロセッサ数：1（ハイパースレッディング on）
   - コア数：2
 - RAM
-  - 2 GB
+  - 2 GiB
 - DISK
-  - 100 GB
+  - 100 GiB
 
-### CPU，メモリの確認
+### CPU、メモリの確認
 
-サーバ監視用の `htop` コマンドで簡単にサーバの CPU のコア数とメモリ容量が確認できる．
+サーバ監視用の `htop` コマンドで簡単にサーバの CPU のコア数とメモリ容量が確認できる。
 
 ```sh
 # VM 環境
@@ -96,9 +87,9 @@ $ htop
 
 <img src="img/htop.png" width="400" />
 
-### CPU の確認：物理プロセッサ数，コア数
+### CPU の確認：物理プロセッサ数、コア数
 
-CPU の[ハイパースレッディング](http://e-words.jp/w/%E3%83%8F%E3%82%A4%E3%83%91%E3%83%BC%E3%82%B9%E3%83%AC%E3%83%83%E3%83%87%E3%82%A3%E3%83%B3%E3%82%B0.html#:~:text=%E3%83%8F%E3%82%A4%E3%83%91%E3%83%BC%E3%82%B9%E3%83%AC%E3%83%83%E3%83%87%E3%82%A3%E3%83%B3%E3%82%B0%E3%81%A8%E3%81%AF%E3%80%81%E7%B1%B3,%E4%BA%8C%E3%81%A4%E3%81%AB%E8%A6%8B%E3%81%9B%E3%81%8B%E3%81%91%E3%82%8B%E6%8A%80%E8%A1%93%E3%80%82)が on の場合，物理プロセッサ数と OS が認識するプロセッサ数（コア数）が合わないので注意．
+CPU の[ハイパースレッディング](http://e-words.jp/w/%E3%83%8F%E3%82%A4%E3%83%91%E3%83%BC%E3%82%B9%E3%83%AC%E3%83%83%E3%83%87%E3%82%A3%E3%83%B3%E3%82%B0.html#:~:text=%E3%83%8F%E3%82%A4%E3%83%91%E3%83%BC%E3%82%B9%E3%83%AC%E3%83%83%E3%83%87%E3%82%A3%E3%83%B3%E3%82%B0%E3%81%A8%E3%81%AF%E3%80%81%E7%B1%B3,%E4%BA%8C%E3%81%A4%E3%81%AB%E8%A6%8B%E3%81%9B%E3%81%8B%E3%81%91%E3%82%8B%E6%8A%80%E8%A1%93%E3%80%82)が on の場合、物理プロセッサ数と OS が認識するプロセッサ数（コア数）が合わないので注意。
 
 ```sh
 # VM 環境

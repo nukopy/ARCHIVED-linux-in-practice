@@ -12,7 +12,7 @@ Vagrant.configure("2") do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
-  config.vm.box = "bento/ubuntu-18.04"
+  config.vm.box = "ubuntu/focal64"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -39,39 +39,24 @@ Vagrant.configure("2") do |config|
   # your network.
   # config.vm.network "public_network"
 
-  # Share an additional folder to the guest VM. The first argument is
-  # the path on the host to the actual folder. The second argument is
-  # the path on the guest to mount the folder. And the optional third
-  # argument is a set of non-required options.
-  # config.vm.synced_folder {host_path}, {guest_path}, option...
-
   # マウント設定
   config.vm.synced_folder ".", "/vagrant", owner: "vagrant"
 
-  # VM のスペック
+  # プロバイダ設定（VM のスペックなど）
   config.disksize.size = "100GB"
   config.vm.provider "virtualbox" do |vb|
+    # Display the VirtualBox GUI when booting the machine
+    vb.gui = true
+
     # 割り当てるメモリ(MB)
     vb.memory = 2048
+
     # CPUの数
     vb.cpus = 2
+
     # I/O APICの有効化
     # vb.customize ["modifyvm", :id, "--ioapic", "on"]
   end
-  # Provider-specific configuration so you can fine-tune various
-  # backing providers for Vagrant. These expose provider-specific options.
-  # Example for VirtualBox:
-  #
-  # config.vm.provider "virtualbox" do |vb|
-  #   # Display the VirtualBox GUI when booting the machine
-  #   vb.gui = true
-  #
-  #   # Customize the amount of memory on the VM:
-  #   vb.memory = "1024"
-  # end
-  #
-  # View the documentation for the provider you are using for more
-  # information on available options.
 
   # Enable provisioning with a shell script. Additional provisioners such as
   # Ansible, Chef, Docker, Puppet and Salt are also available. Please see the
